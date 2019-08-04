@@ -74,6 +74,7 @@ public class DetailFragment extends Fragment {
 
     private void loadMovieDetail(int id) {
         apiService.getMovieDetail(id, new Callback() {
+            
             @Override
             public void onResponse(Call call, Response response) {
                 MovieDetail movieDetail = (MovieDetail) response.body();
