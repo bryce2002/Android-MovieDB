@@ -52,7 +52,6 @@ public class MainFragment extends Fragment implements MovieListAdapter.OnMovieIt
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         rvMovies = (RecyclerView) view.findViewById(R.id.rv_movies);
 
         return view;
@@ -63,12 +62,6 @@ public class MainFragment extends Fragment implements MovieListAdapter.OnMovieIt
         super.onViewCreated(view, savedInstanceState);
 
         if(savedInstanceState == null) {
-            ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-
-            actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-            if (actionBar != null) {
-                actionBar.setTitle(R.string.app_name);
-            }
 
             movieListAdapter = new MovieListAdapter(getContext());
             movieListAdapter.setOnMovieItemSelectedListener(this);

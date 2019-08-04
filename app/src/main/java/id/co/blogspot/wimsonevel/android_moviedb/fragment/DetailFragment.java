@@ -71,8 +71,8 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         imgPoster = (ImageView) view.findViewById(R.id.img_poster);
+        tvMovieTitle = (TextView) view.findViewById(R.id.movie_title);
         tvMovieDate = (TextView) view.findViewById(R.id.movie_date);
         tvMovieDuration = (TextView) view.findViewById(R.id.movie_duration);
         tvMovieOverview = (TextView) view.findViewById(R.id.movie_overview);
@@ -103,16 +103,8 @@ public class DetailFragment extends Fragment {
 
                     tvMovieDate.setText(movieDetail.getReleaseDate());
                     tvMovieDuration.setText(movieDetail.getRuntime() + " Minutes");
-
+                    tvMovieTitle.setText(movieDetail.getTitle());
                     tvMovieOverview.setText(movieDetail.getOverview());
-
-                    ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-
-                    ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-                    if (actionBar != null) {
-                        actionBar.setDisplayHomeAsUpEnabled(true);
-                        actionBar.setTitle(movieDetail.getTitle());
-                    }
                 }else{
                     Toast.makeText(getContext(), "No Data!", Toast.LENGTH_LONG).show();
                 }
