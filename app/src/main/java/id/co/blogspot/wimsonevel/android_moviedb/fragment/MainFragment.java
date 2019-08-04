@@ -68,7 +68,6 @@ public class MainFragment extends Fragment implements MovieListAdapter.OnMovieIt
             actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
             if (actionBar != null) {
                 actionBar.setTitle(R.string.app_name);
-                actionBar.setSubtitle(R.string.most_popular);
             }
 
             movieListAdapter = new MovieListAdapter(getContext());

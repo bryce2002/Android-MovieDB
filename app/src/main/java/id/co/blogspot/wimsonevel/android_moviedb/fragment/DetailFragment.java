@@ -73,7 +73,6 @@ public class DetailFragment extends Fragment {
 
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         imgPoster = (ImageView) view.findViewById(R.id.img_poster);
-        tvMovieTitle = (TextView) view.findViewById(R.id.movie_title);
         tvMovieDate = (TextView) view.findViewById(R.id.movie_date);
         tvMovieDuration = (TextView) view.findViewById(R.id.movie_duration);
         tvMovieOverview = (TextView) view.findViewById(R.id.movie_overview);
@@ -84,15 +83,6 @@ public class DetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(R.string.app_name);
-            actionBar.setSubtitle(R.string.movie_detail);
-        }
 
         movieData = getArguments().getParcelable(DetailFragment.class.getSimpleName());
 
@@ -111,11 +101,18 @@ public class DetailFragment extends Fragment {
                             .load(Constant.IMG_URL + movieDetail.getPosterPath())
                             .into(imgPoster);
 
-                    tvMovieTitle.setText(movieDetail.getOriginalTitle());
                     tvMovieDate.setText(movieDetail.getReleaseDate());
                     tvMovieDuration.setText(movieDetail.getRuntime() + " Minutes");
 
                     tvMovieOverview.setText(movieDetail.getOverview());
+
+                    ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+                    ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+                    if (actionBar != null) {
+                        actionBar.setDisplayHomeAsUpEnabled(true);
+                        actionBar.setTitle(movieDetail.getOriginalTitle());
+                    }
                 }else{
                     Toast.makeText(getContext(), "No Data!", Toast.LENGTH_LONG).show();
                 }
