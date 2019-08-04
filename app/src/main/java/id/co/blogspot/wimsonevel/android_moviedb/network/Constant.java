@@ -13,8 +13,6 @@ public class Constant {
     public static final String API_KEY = BuildConfig.MOVIE_API_KEY;
     public static final String VERSION = "/3";
     public static final String MOVIE = "/movie";
-    public static final String VIDEOS = "videos";
-    public static final String REVIEWS = "reviews";
     public static final String LANG_EN = "en-US";
 
     public static final String MOVIE_PATH = VERSION + MOVIE;

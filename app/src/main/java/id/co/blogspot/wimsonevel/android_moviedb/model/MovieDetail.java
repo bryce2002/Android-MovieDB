@@ -26,10 +26,6 @@ public class MovieDetail {
     private int runtime;
     @SerializedName("vote_average")
     private double voteAverage;
-    @SerializedName("homepage")
-    private String homepage;
-    @SerializedName("genres")
-    private List<Genre> genres;
 
     public MovieDetail() {
     }
@@ -96,21 +92,5 @@ public class MovieDetail {
 
     public void setVoteAverage(double voteAverage) {
         this.voteAverage = voteAverage;
-    }
-
-    public String getHomepage() {
-        return homepage;
-    }
-
-    public void setHomepage(String homepage) {
-        this.homepage = homepage;
-    }
-
-    public List<Genre> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(List<Genre> genres) {
-        this.genres = genres;
     }
 }

@@ -73,12 +73,4 @@ public class ApiService {
     public void getMovieDetail(int movieId, Callback callback) {
         apiInterface.movieDetail(movieId).enqueue(callback);
     }
-
-    public void getTrailers(int movieId, Callback callback) {
-        apiInterface.trailers(movieId).enqueue(callback);
-    }
-
-    public void getReviews(int movieId, Callback callback) {
-        apiInterface.reviews(movieId).enqueue(callback);
-    }
 }

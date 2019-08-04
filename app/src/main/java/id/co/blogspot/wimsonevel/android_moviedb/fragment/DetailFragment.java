@@ -27,10 +27,6 @@ import id.co.blogspot.wimsonevel.android_moviedb.R;
 import id.co.blogspot.wimsonevel.android_moviedb.model.Genre;
 import id.co.blogspot.wimsonevel.android_moviedb.model.MovieData;
 import id.co.blogspot.wimsonevel.android_moviedb.model.MovieDetail;
-import id.co.blogspot.wimsonevel.android_moviedb.model.Review;
-import id.co.blogspot.wimsonevel.android_moviedb.model.ReviewData;
-import id.co.blogspot.wimsonevel.android_moviedb.model.Trailer;
-import id.co.blogspot.wimsonevel.android_moviedb.model.TrailerData;
 import id.co.blogspot.wimsonevel.android_moviedb.network.ApiService;
 import id.co.blogspot.wimsonevel.android_moviedb.network.Constant;
 import id.co.blogspot.wimsonevel.android_moviedb.util.ConnectionUtil;
@@ -86,14 +82,7 @@ public class DetailFragment extends Fragment {
         tvMovieTitle = (TextView) view.findViewById(R.id.movie_title);
         tvMovieDate = (TextView) view.findViewById(R.id.movie_date);
         tvMovieDuration = (TextView) view.findViewById(R.id.movie_duration);
-        tvMovieGenre = (TextView) view.findViewById(R.id.movie_genre);
-        tvMovieHomepage = (TextView) view.findViewById(R.id.movie_homepage);
         tvMovieOverview = (TextView) view.findViewById(R.id.movie_overview);
-        viewTrailers = (LinearLayout) view.findViewById(R.id.view_trailers);
-        viewReviews = (LinearLayout) view.findViewById(R.id.view_reviews);
-
-        pgTrailers = (ProgressBar) view.findViewById(R.id.pg_trailers);
-        pgReviews = (ProgressBar) view.findViewById(R.id.pg_reviews);
 
         return view;
     }
@@ -118,8 +107,6 @@ public class DetailFragment extends Fragment {
         if(ConnectionUtil.isConnected(getContext())) {
             if(movieData != null) {
                 loadMovieDetail(movieData.getId());
-                loadTrailer(movieData.getId());
-                loadReviews(movieData.getId());
             }
         }else{
             Toast.makeText(getContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
@@ -141,17 +128,6 @@ public class DetailFragment extends Fragment {
                     tvMovieDate.setText(movieDetail.getReleaseDate());
                     tvMovieDuration.setText(movieDetail.getRuntime() + " Minutes");
 
-                    for (int i = 0; i < movieDetail.getGenres().size(); i++) {
-                        Genre genre = movieDetail.getGenres().get(i);
-
-                        if(i < movieDetail.getGenres().size() - 1) {
-                            tvMovieGenre.append(genre.getName() + ",");
-                        }else{
-                            tvMovieGenre.append(genre.getName());
-                        }
-                    }
-
-                    tvMovieHomepage.setText(movieDetail.getHomepage());
                     tvMovieOverview.setText(movieDetail.getOverview());
                 }else{
                     Toast.makeText(getContext(), "No Data!", Toast.LENGTH_LONG).show();
@@ -168,126 +144,6 @@ public class DetailFragment extends Fragment {
 
             }
         });
-    }
-
-    private void loadTrailer(int id) {
-        pgTrailers.setVisibility(View.VISIBLE);
-
-        apiService.getTrailers(id, new Callback() {
-            @Override
-            public void onResponse(Call call, Response response) {
-                Trailer trailer = (Trailer) response.body();
-
-                if(trailer != null) {
-                    showTrailers(trailer.getResults());
-                }else{
-                    Toast.makeText(getContext(), "No Data!", Toast.LENGTH_LONG).show();
-                }
-
-                pgTrailers.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onFailure(Call call, Throwable t) {
-                if(t instanceof SocketTimeoutException) {
-                    Toast.makeText(getContext(), "Request Timeout. Please try again!", Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(getContext(), "Connection Error!", Toast.LENGTH_LONG).show();
-                }
-
-                pgTrailers.setVisibility(View.GONE);
-            }
-        });
-    }
-
-    private void loadReviews(int id) {
-        pgReviews.setVisibility(View.VISIBLE);
-
-        apiService.getReviews(id, new Callback() {
-            @Override
-            public void onResponse(Call call, Response response) {
-                Review review = (Review) response.body();
-
-                if(review != null) {
-                    showReviews(review.getResults());
-                }else{
-                    Toast.makeText(getContext(), "No Data!", Toast.LENGTH_LONG).show();
-                }
-
-                pgReviews.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onFailure(Call call, Throwable t) {
-                if(t instanceof SocketTimeoutException) {
-                    Toast.makeText(getContext(), "Request Timeout. Please try again!", Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(getContext(), "Connection Error!", Toast.LENGTH_LONG).show();
-                }
-
-                pgReviews.setVisibility(View.GONE);
-            }
-        });
-    }
-
-    private void showTrailers(List<TrailerData> trailerDatas) {
-        viewTrailers.removeAllViews();
-
-        for (int i = 0; i < trailerDatas.size(); i++) {
-
-            final TrailerData trailerData = trailerDatas.get(i);
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.list_item_trailer, viewTrailers, false);
-
-            ImageView trailerThumb = (ImageView) view.findViewById(R.id.trailer_thumb);
-            TextView trailerName = (TextView) view.findViewById(R.id.trailer_name);
-
-            if(trailerData.getSite().equalsIgnoreCase("youtube")) {
-                Picasso.with(getContext())
-                        .load("http://img.youtube.com/vi/" + trailerData.getKey() + "/default.jpg")
-                        .into(trailerThumb);
-            }
-
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    watchYoutubeVideo(trailerData.getKey());
-                }
-            });
-
-
-            trailerName.setText(trailerData.getName());
-            viewTrailers.addView(view);
-        }
-    }
-
-    public void watchYoutubeVideo(String id){
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
-        Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://www.youtube.com/watch?v=" + id));
-        try {
-            startActivity(appIntent);
-        } catch (ActivityNotFoundException ex) {
-            startActivity(webIntent);
-        }
-    }
-
-    private void showReviews(List<ReviewData> reviewDatas) {
-        viewReviews.removeAllViews();
-
-        for (int i = 0; i < reviewDatas.size(); i++) {
-
-            ReviewData reviewData = reviewDatas.get(i);
-            View view = LayoutInflater.from(getContext()).inflate(R.layout.list_item_review, viewReviews, false);
-
-            TextView reviewers = (TextView) view.findViewById(R.id.reviewers);
-            TextView content = (TextView) view.findViewById(R.id.content);
-
-            reviewers.setText(reviewData.getAuthor());
-            content.setText(reviewData.getContent().length() > 100 ?
-                    reviewData.getContent().substring(0, 100) + "..." : reviewData.getContent());
-
-            viewReviews.addView(view);
-        }
     }
 
 }
