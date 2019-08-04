@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "id.co.blogspot.wimsonevel.android_moviedb"
+        applicationId "com.example.android2.FINAL.PROJECT"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
