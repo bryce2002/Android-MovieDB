@@ -51,12 +51,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         }
     }
 
-    public void clear() {
-        while (getItemCount() > 0) {
-            remove(getItem(0));
-        }
-    }
-
     public MovieData getItem(int position) {
         return movieDatas.get(position);
     }

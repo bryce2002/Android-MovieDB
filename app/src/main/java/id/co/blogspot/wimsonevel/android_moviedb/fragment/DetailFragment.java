@@ -1,8 +1,5 @@
 package id.co.blogspot.wimsonevel.android_moviedb.fragment;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,15 +18,12 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 import java.net.SocketTimeoutException;
-import java.util.List;
 
 import id.co.blogspot.wimsonevel.android_moviedb.R;
-import id.co.blogspot.wimsonevel.android_moviedb.model.Genre;
 import id.co.blogspot.wimsonevel.android_moviedb.model.MovieData;
 import id.co.blogspot.wimsonevel.android_moviedb.model.MovieDetail;
 import id.co.blogspot.wimsonevel.android_moviedb.network.ApiService;
 import id.co.blogspot.wimsonevel.android_moviedb.network.Constant;
-import id.co.blogspot.wimsonevel.android_moviedb.util.ConnectionUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -103,14 +97,7 @@ public class DetailFragment extends Fragment {
         movieData = getArguments().getParcelable(DetailFragment.class.getSimpleName());
 
         apiService = new ApiService();
-
-        if(ConnectionUtil.isConnected(getContext())) {
-            if(movieData != null) {
-                loadMovieDetail(movieData.getId());
-            }
-        }else{
-            Toast.makeText(getContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
-        }
+        loadMovieDetail(movieData.getId());
     }
 
     private void loadMovieDetail(int id) {

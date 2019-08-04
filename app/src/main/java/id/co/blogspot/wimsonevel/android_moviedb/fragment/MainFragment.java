@@ -3,7 +3,6 @@ package id.co.blogspot.wimsonevel.android_moviedb.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -21,8 +20,6 @@ import id.co.blogspot.wimsonevel.android_moviedb.R;
 import id.co.blogspot.wimsonevel.android_moviedb.adapter.MovieListAdapter;
 import id.co.blogspot.wimsonevel.android_moviedb.model.Movie;
 import id.co.blogspot.wimsonevel.android_moviedb.network.ApiService;
-import id.co.blogspot.wimsonevel.android_moviedb.util.EndlessRecyclerOnScrollListener;
-import id.co.blogspot.wimsonevel.android_moviedb.util.GridMarginDecoration;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,13 +34,10 @@ public class MainFragment extends Fragment implements MovieListAdapter.OnMovieIt
     private RecyclerView rvMovies;
     private GridLayoutManager gridLayoutManager;
     private MovieListAdapter movieListAdapter;
-    private SwipeRefreshLayout refreshLayout;
 
     private ActionBar actionBar;
     private int page = 1;
     private int limit = 20;
-
-    private EndlessRecyclerOnScrollListener endlessRecyclerOnScrollListener;
 
     private ApiService apiService;
 
@@ -59,7 +53,6 @@ public class MainFragment extends Fragment implements MovieListAdapter.OnMovieIt
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
         rvMovies = (RecyclerView) view.findViewById(R.id.rv_movies);
 
         return view;
@@ -84,49 +77,14 @@ public class MainFragment extends Fragment implements MovieListAdapter.OnMovieIt
             gridLayoutManager = new GridLayoutManager(getContext(), 2);
             rvMovies.setLayoutManager(gridLayoutManager);
 
-            rvMovies.addItemDecoration(new GridMarginDecoration(getContext(), 1, 1, 1, 1));
             rvMovies.setHasFixedSize(true);
             rvMovies.setAdapter(movieListAdapter);
-
-            addScroll();
-
-            refreshLayout.setColorSchemeResources(R.color.colorPrimary);
-            refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    refreshData();
-                }
-            });
 
             loadData();
         }
     }
 
-    private void addScroll() {
-        endlessRecyclerOnScrollListener = new EndlessRecyclerOnScrollListener(gridLayoutManager, page, limit) {
-            @Override
-            public void onLoadMore(int next) {
-                page = next;
-                loadData();
-            }
-        };
-
-        rvMovies.addOnScrollListener(endlessRecyclerOnScrollListener);
-    }
-
-    private void removeScroll() {
-        rvMovies.removeOnScrollListener(endlessRecyclerOnScrollListener);
-    }
-
     private void loadData(){
-        if (refreshLayout != null) {
-            refreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    refreshLayout.setRefreshing(true);
-                }
-            });
-        }
 
         apiService = new ApiService();
         apiService.getPopularMovies(page, new Callback() {
@@ -141,9 +99,6 @@ public class MainFragment extends Fragment implements MovieListAdapter.OnMovieIt
                 }else{
                     Toast.makeText(getContext(), "No Data!", Toast.LENGTH_LONG).show();
                 }
-
-                if (refreshLayout != null)
-                    refreshLayout.setRefreshing(false);
             }
 
             @Override
@@ -154,24 +109,8 @@ public class MainFragment extends Fragment implements MovieListAdapter.OnMovieIt
                     Toast.makeText(getContext(), "Connection Error!", Toast.LENGTH_LONG).show();
                 }
 
-                if (refreshLayout != null)
-                    refreshLayout.setRefreshing(false);
             }
         });
-    }
-
-    private void refreshData() {
-        if(movieListAdapter != null) {
-            movieListAdapter.clear();
-        }
-        page = 1;
-
-        limit = 20;
-
-        removeScroll();
-        addScroll();
-
-        loadData();
     }
 
     @Override
