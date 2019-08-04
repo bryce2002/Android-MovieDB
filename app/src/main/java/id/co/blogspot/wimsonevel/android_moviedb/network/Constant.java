@@ -15,6 +15,6 @@ public class Constant {
     public static final String MOVIE = "/movie";
     public static final String LANG_EN = "en-US";
 
-    public static final String MOVIE_PATH = VERSION + MOVIE;
+    public static final String MOVIE_PATH = "/3/movie";
 
 }

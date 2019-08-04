@@ -26,6 +26,8 @@ public class MovieDetail {
     private int runtime;
     @SerializedName("vote_average")
     private double voteAverage;
+    @SerializedName("title")
+    private String title;
 
     public MovieDetail() {
     }
@@ -48,6 +50,10 @@ public class MovieDetail {
 
     public String getOriginalTitle() {
         return originalTitle;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public void setOriginalTitle(String originalTitle) {

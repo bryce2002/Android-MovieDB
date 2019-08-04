@@ -4,15 +4,21 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import id.co.blogspot.wimsonevel.android_moviedb.BuildConfig;
+import id.co.blogspot.wimsonevel.android_moviedb.model.Movie;
+import id.co.blogspot.wimsonevel.android_moviedb.model.MovieDetail;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by Wim on 6/2/17.
@@ -74,3 +80,4 @@ public class ApiService {
         apiInterface.movieDetail(movieId).enqueue(callback);
     }
 }
+

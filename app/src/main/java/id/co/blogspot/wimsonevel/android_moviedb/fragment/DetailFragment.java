@@ -111,7 +111,7 @@ public class DetailFragment extends Fragment {
                     ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
                     if (actionBar != null) {
                         actionBar.setDisplayHomeAsUpEnabled(true);
-                        actionBar.setTitle(movieDetail.getOriginalTitle());
+                        actionBar.setTitle(movieDetail.getTitle());
                     }
                 }else{
                     Toast.makeText(getContext(), "No Data!", Toast.LENGTH_LONG).show();
