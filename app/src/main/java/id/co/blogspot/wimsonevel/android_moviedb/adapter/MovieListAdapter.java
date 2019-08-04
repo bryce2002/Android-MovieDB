@@ -43,14 +43,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
         }
     }
 
-    public void remove(MovieData item) {
-        int position = movieDatas.indexOf(item);
-        if (position > -1) {
-            movieDatas.remove(position);
-            notifyItemRemoved(position);
-        }
-    }
-
     public MovieData getItem(int position) {
         return movieDatas.get(position);
     }

@@ -44,7 +44,7 @@ public class MainFragment extends Fragment implements MovieListAdapter.OnMovieIt
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -76,7 +76,7 @@ public class MainFragment extends Fragment implements MovieListAdapter.OnMovieIt
             gridLayoutManager = new GridLayoutManager(getContext(), 2);
             rvMovies.setLayoutManager(gridLayoutManager);
 
-            rvMovies.setHasFixedSize(true);
+            //rvMovies.setHasFixedSize(true);
             rvMovies.setAdapter(movieListAdapter);
 
             loadData();
