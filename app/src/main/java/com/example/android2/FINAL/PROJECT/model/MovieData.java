@@ -8,10 +8,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Wim on 5/29/17.
- */
-
 public class MovieData implements Parcelable {
 
     @SerializedName("id")

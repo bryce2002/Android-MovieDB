@@ -15,22 +15,18 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by Wim on 6/2/17.
- */
+public class DataSource {
 
-public class ApiService {
+    private DataInterface apiInterface;
 
-    private ApiInterface apiInterface;
-
-    public ApiService(){
+    public DataSource(){
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constant.BASE_URL)
+                .baseUrl(MovieInfo.BASE_URL)
                 .client(builder())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        apiInterface = retrofit.create(ApiInterface.class);
+        apiInterface = retrofit.create(DataInterface.class);
     }
 
     private OkHttpClient builder() {
@@ -49,8 +45,8 @@ public class ApiService {
                 Request request = chain.request();
                 HttpUrl url = request.url()
                         .newBuilder()
-                        .addQueryParameter("api_key", Constant.API_KEY)
-                        .addQueryParameter("language", Constant.LANG_EN)
+                        .addQueryParameter("api_key", MovieInfo.API_KEY)
+                        .addQueryParameter("language", MovieInfo.LANG_EN)
                         .build();
 
                 request = request.newBuilder().url(url).build();

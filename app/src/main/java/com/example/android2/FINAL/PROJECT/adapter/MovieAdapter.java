@@ -14,20 +14,16 @@ import java.util.List;
 
 import com.example.android2.FINAL.PROJECT.R;
 import com.example.android2.FINAL.PROJECT.model.MovieData;
-import com.example.android2.FINAL.PROJECT.network.Constant;
+import com.example.android2.FINAL.PROJECT.network.MovieInfo;
 
-/**
- * Created by Wim on 5/29/17.
- */
-
-public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private List<MovieData> movieDatas;
     private Context context;
 
     private OnMovieItemSelectedListener onMovieItemSelectedListener;
 
-    public MovieListAdapter(Context context) {
+    public MovieAdapter(Context context) {
         this.context = context;
         movieDatas = new ArrayList<>();
     }
@@ -49,7 +45,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
     @Override
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_movie, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_movie, parent, false);
         final MovieViewHolder movieViewHolder = new MovieViewHolder(view);
         movieViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +88,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
 
         public void bind(MovieData movieData) {
             Picasso.with(context)
-                    .load(Constant.IMG_URL + movieData.getPosterPath())
+                    .load(MovieInfo.IMG_URL + movieData.getPosterPath())
                     .into(img);
         }
     }

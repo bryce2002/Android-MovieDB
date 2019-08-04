@@ -7,17 +7,13 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-/**
- * Created by Wim on 6/2/17.
- */
+public interface DataInterface {
 
-public interface ApiInterface {
-
-    @GET(Constant.MOVIE_PATH + "/popular")
+    @GET(MovieInfo.MOVIE_PATH + "/popular")
     Call<Movie> popularMovies(
             @Query("page") int page);
 
-    @GET(Constant.MOVIE_PATH + "/{movie_id}")
+    @GET(MovieInfo.MOVIE_PATH + "/{movie_id}")
     Call<MovieDetail> movieDetail(
             @Path("movie_id") int movieId);
 

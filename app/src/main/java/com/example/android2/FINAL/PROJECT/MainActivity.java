@@ -3,7 +3,7 @@ package com.example.android2.FINAL.PROJECT;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.example.android2.FINAL.PROJECT.fragment.MainFragment;
+import com.example.android2.FINAL.PROJECT.fragment.OverviewFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new MainFragment())
+                    .add(R.id.container, new OverviewFragment())
                     .commit();
         }
     }

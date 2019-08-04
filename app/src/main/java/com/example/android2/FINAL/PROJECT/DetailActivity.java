@@ -10,10 +10,6 @@ import android.view.MenuItem;
 import com.example.android2.FINAL.PROJECT.fragment.DetailFragment;
 import com.example.android2.FINAL.PROJECT.model.MovieData;
 
-/**
- * Created by Wim on 5/29/17.
- */
-
 public class DetailActivity extends AppCompatActivity {
 
     public static void start(Context context, MovieData movieData) {

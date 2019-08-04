@@ -2,10 +2,6 @@ package com.example.android2.FINAL.PROJECT.model;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by Wim on 6/2/17.
- */
-
 public class MovieDetail {
 
     @SerializedName("id")
@@ -38,24 +34,13 @@ public class MovieDetail {
         this.id = id;
     }
 
-    public String getOriginalLanguage() {
-        return originalLanguage;
-    }
-
-    public void setOriginalLanguage(String originalLanguage) {
-        this.originalLanguage = originalLanguage;
-    }
-
-    public String getOriginalTitle() {
-        return originalTitle;
-    }
 
     public String getTitle() {
         return title;
     }
 
-    public void setOriginalTitle(String originalTitle) {
-        this.originalTitle = originalTitle;
+    public void setTitle(String originalTitle) {
+        this.title = title;
     }
 
     public String getOverview() {
@@ -88,13 +73,5 @@ public class MovieDetail {
 
     public void setRuntime(int runtime) {
         this.runtime = runtime;
-    }
-
-    public double getVoteAverage() {
-        return voteAverage;
-    }
-
-    public void setVoteAverage(double voteAverage) {
-        this.voteAverage = voteAverage;
     }
 }

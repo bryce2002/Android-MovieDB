@@ -3,10 +3,8 @@ package com.example.android2.FINAL.PROJECT.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,40 +14,32 @@ import java.net.SocketTimeoutException;
 
 import com.example.android2.FINAL.PROJECT.DetailActivity;
 import com.example.android2.FINAL.PROJECT.R;
-import com.example.android2.FINAL.PROJECT.adapter.MovieListAdapter;
+import com.example.android2.FINAL.PROJECT.adapter.MovieAdapter;
 import com.example.android2.FINAL.PROJECT.model.Movie;
-import com.example.android2.FINAL.PROJECT.network.ApiService;
+import com.example.android2.FINAL.PROJECT.network.DataSource;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by Wim on 5/29/17.
- */
+public class OverviewFragment extends Fragment implements MovieAdapter.OnMovieItemSelectedListener {
 
-public class MainFragment extends Fragment implements MovieListAdapter.OnMovieItemSelectedListener {
-
-    private Toolbar toolbar;
     private RecyclerView rvMovies;
     private GridLayoutManager gridLayoutManager;
-    private MovieListAdapter movieListAdapter;
+    private MovieAdapter movieListAdapter;
 
-    private ActionBar actionBar;
     private int page = 1;
-    private int limit = 20;
 
-    private ApiService apiService;
+    private DataSource apiService;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setHasOptionsMenu(true);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_overview, container, false);
 
         rvMovies = (RecyclerView) view.findViewById(R.id.rv_movies);
 
@@ -62,13 +52,12 @@ public class MainFragment extends Fragment implements MovieListAdapter.OnMovieIt
 
         if(savedInstanceState == null) {
 
-            movieListAdapter = new MovieListAdapter(getContext());
+            movieListAdapter = new MovieAdapter(getContext());
             movieListAdapter.setOnMovieItemSelectedListener(this);
 
             gridLayoutManager = new GridLayoutManager(getContext(), 2);
             rvMovies.setLayoutManager(gridLayoutManager);
 
-            //rvMovies.setHasFixedSize(true);
             rvMovies.setAdapter(movieListAdapter);
 
             loadData();
@@ -77,7 +66,7 @@ public class MainFragment extends Fragment implements MovieListAdapter.OnMovieIt
 
     private void loadData(){
 
-        apiService = new ApiService();
+        apiService = new DataSource();
         apiService.getPopularMovies(page, new Callback() {
             @Override
             public void onResponse(Call call, Response response) {
