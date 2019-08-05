@@ -18,19 +18,19 @@ import com.example.android2.FINAL.PROJECT.network.MovieInfo;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    private List<MovieData> movieDatas;
+    private List<MovieData> movies;
     private Context context;
 
     private OnMovieItemSelectedListener onMovieItemSelectedListener;
 
     public MovieAdapter(Context context) {
         this.context = context;
-        movieDatas = new ArrayList<>();
+        movies = new ArrayList<>();
     }
 
     private void add(MovieData item) {
-        movieDatas.add(item);
-        notifyItemInserted(movieDatas.size() - 1);
+        movies.add(item);
+        notifyItemInserted(movies.size() - 1);
     }
 
     public void addAll(List<MovieData> movieDatas) {
@@ -40,7 +40,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public MovieData getItem(int position) {
-        return movieDatas.get(position);
+        return movies.get(position);
     }
 
     @Override
@@ -50,10 +50,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         movieViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int adapterPos = movieViewHolder.getAdapterPosition();
-                if (adapterPos != RecyclerView.NO_POSITION) {
+                int adapterPosition = movieViewHolder.getAdapterPosition();
+                if (adapterPosition != RecyclerView.NO_POSITION) {
                     if (onMovieItemSelectedListener != null) {
-                        onMovieItemSelectedListener.onItemClick(movieViewHolder.itemView, adapterPos);
+                        onMovieItemSelectedListener.onItemClick(movieViewHolder.itemView, adapterPosition);
                     }
                 }
             }
@@ -64,13 +64,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-        final MovieData movieData = movieDatas.get(position);
+        final MovieData movieData = movies.get(position);
         holder.bind(movieData);
     }
 
     @Override
     public int getItemCount() {
-        return movieDatas.size();
+        return movies.size();
     }
 
     public void setOnMovieItemSelectedListener(OnMovieItemSelectedListener onMovieItemSelectedListener) {
@@ -78,18 +78,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     }
 
     public class MovieViewHolder extends RecyclerView.ViewHolder {
-        ImageView img;
+        ImageView movieImg;
 
         public MovieViewHolder(View itemView) {
             super(itemView);
 
-            img = (ImageView) itemView.findViewById(R.id.img_thumb);
+            movieImg = (ImageView) itemView.findViewById(R.id.img_thumb);
         }
 
         public void bind(MovieData movieData) {
             Picasso.with(context)
                     .load(MovieInfo.IMG_URL + movieData.getPosterPath())
-                    .into(img);
+                    .into(movieImg);
         }
     }
 

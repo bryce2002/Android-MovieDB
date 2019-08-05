@@ -23,13 +23,13 @@ import retrofit2.Response;
 
 public class OverviewFragment extends Fragment implements MovieAdapter.OnMovieItemSelectedListener {
 
-    private RecyclerView rvMovies;
+    private RecyclerView recyclerView;
     private GridLayoutManager gridLayoutManager;
-    private MovieAdapter movieListAdapter;
+    private MovieAdapter movieAdapter;
 
-    private int page = 1;
+    private int pageNumber = 1;
 
-    private DataSource apiService;
+    private DataSource api;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,10 +38,10 @@ public class OverviewFragment extends Fragment implements MovieAdapter.OnMovieIt
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_overview, container, false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup viewGroup, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_overview, viewGroup, false);
 
-        rvMovies = (RecyclerView) view.findViewById(R.id.rv_movies);
+        recyclerView = (RecyclerView) view.findViewById(R.id.mvList);
 
         return view;
     }
@@ -52,42 +52,36 @@ public class OverviewFragment extends Fragment implements MovieAdapter.OnMovieIt
 
         if(savedInstanceState == null) {
 
-            movieListAdapter = new MovieAdapter(getContext());
-            movieListAdapter.setOnMovieItemSelectedListener(this);
+            movieAdapter = new MovieAdapter(getContext());
+            movieAdapter.setOnMovieItemSelectedListener(this);
 
             gridLayoutManager = new GridLayoutManager(getContext(), 2);
-            rvMovies.setLayoutManager(gridLayoutManager);
+            recyclerView.setLayoutManager(gridLayoutManager);
 
-            rvMovies.setAdapter(movieListAdapter);
+            recyclerView.setAdapter(movieAdapter);
 
-            loadData();
+            loadMovie();
         }
     }
 
-    private void loadData(){
+    private void loadMovie(){
 
-        apiService = new DataSource();
-        apiService.getPopularMovies(page, new Callback() {
+        api = new DataSource();
+        api.getPopularMovies(pageNumber, new Callback() {
             @Override
             public void onResponse(Call call, Response response) {
                 Movie movie = (Movie) response.body();
 
                 if(movie != null) {
-                    if(movieListAdapter != null) {
-                        movieListAdapter.addAll(movie.getResults());
+                    if(movieAdapter != null) {
+                        movieAdapter.addAll(movie.getResults());
                     }
-                }else{
-                    Toast.makeText(getContext(), "No Data!", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call call, Throwable t) {
-                if(t instanceof SocketTimeoutException) {
-                    Toast.makeText(getContext(), "Request Timeout. Please try again!", Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(getContext(), "Connection Error!", Toast.LENGTH_LONG).show();
-                }
+                Toast.makeText(getContext(), "Failed!", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -95,7 +89,7 @@ public class OverviewFragment extends Fragment implements MovieAdapter.OnMovieIt
 
     @Override
     public void onItemClick(View v, int position) {
-        DetailActivity.start(getContext(), movieListAdapter.getItem(position));
+        DetailActivity.start(getContext(), movieAdapter.getItem(position));
     }
 
 }

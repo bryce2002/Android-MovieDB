@@ -27,15 +27,15 @@ public class DetailActivity extends AppCompatActivity {
 
         if(savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, DetailFragment.newInstance(movieData))
+                    .add(R.id.list, DetailFragment.newInstance(movieData))
                     .commit();
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if(id == android.R.id.home) {
+        int idNumber = item.getItemId();
+        if(idNumber == android.R.id.home) {
             onBackPressed();
             return true;
         }

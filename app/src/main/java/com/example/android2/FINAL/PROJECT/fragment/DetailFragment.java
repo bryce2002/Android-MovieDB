@@ -25,15 +25,15 @@ import retrofit2.Response;
 
 public class DetailFragment extends Fragment {
 
-    private ImageView imgPoster;
-    private TextView tvMovieTitle;
-    private TextView tvMovieDate;
-    private TextView tvMovieDuration;
-    private TextView tvMovieOverview;
+    private ImageView movieImage;
+    private TextView movieTitle;
+    private TextView movieDate;
+    private TextView movieDuration;
+    private TextView movieOverview;
 
     private MovieData movieData;
 
-    private DataSource apiService;
+    private DataSource api;
 
     public static DetailFragment newInstance(MovieData movieData) {
         Bundle bundle = new Bundle();
@@ -50,14 +50,14 @@ public class DetailFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_detail, container, false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup viewGroup, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_detail, viewGroup, false);
 
-        imgPoster = (ImageView) view.findViewById(R.id.img_poster);
-        tvMovieTitle = (TextView) view.findViewById(R.id.movie_title);
-        tvMovieDate = (TextView) view.findViewById(R.id.movie_date);
-        tvMovieDuration = (TextView) view.findViewById(R.id.movie_duration);
-        tvMovieOverview = (TextView) view.findViewById(R.id.movie_overview);
+        movieImage = (ImageView) view.findViewById(R.id.mvImage);
+        movieTitle = (TextView) view.findViewById(R.id.mvTitle);
+        movieDate = (TextView) view.findViewById(R.id.mvDate);
+        movieDuration = (TextView) view.findViewById(R.id.mvDuration);
+        movieOverview = (TextView) view.findViewById(R.id.mvOverview);
 
         return view;
     }
@@ -68,13 +68,13 @@ public class DetailFragment extends Fragment {
 
         movieData = getArguments().getParcelable(DetailFragment.class.getSimpleName());
 
-        apiService = new DataSource();
+        api = new DataSource();
         loadMovieDetail(movieData.getId());
     }
 
     private void loadMovieDetail(int id) {
-        apiService.getMovieDetail(id, new Callback() {
-            
+        api.getMovieDetail(id, new Callback() {
+
             @Override
             public void onResponse(Call call, Response response) {
                 MovieDetail movieDetail = (MovieDetail) response.body();
@@ -82,25 +82,18 @@ public class DetailFragment extends Fragment {
                 if(movieDetail != null) {
                     Picasso.with(getContext())
                             .load(MovieInfo.IMG_URL + movieDetail.getPosterPath())
-                            .into(imgPoster);
+                            .into(movieImage);
 
-                    tvMovieDate.setText(movieDetail.getReleaseDate());
-                    tvMovieDuration.setText(movieDetail.getRuntime() + " Minutes");
-                    tvMovieTitle.setText(movieDetail.getTitle());
-                    tvMovieOverview.setText(movieDetail.getOverview());
-                }else{
-                    Toast.makeText(getContext(), "No Data!", Toast.LENGTH_LONG).show();
+                    movieDate.setText(movieDetail.getReleaseDate());
+                    movieDuration.setText(movieDetail.getRuntime() + " Minutes");
+                    movieTitle.setText(movieDetail.getTitle());
+                    movieOverview.setText(movieDetail.getOverview());
                 }
             }
 
             @Override
             public void onFailure(Call call, Throwable t) {
-                if(t instanceof SocketTimeoutException) {
-                    Toast.makeText(getContext(), "Request Timeout. Please try again!", Toast.LENGTH_LONG).show();
-                }else{
-                    Toast.makeText(getContext(), "Connection Error!", Toast.LENGTH_LONG).show();
-                }
-
+                Toast.makeText(getContext(), "Failed!", Toast.LENGTH_SHORT).show();
             }
         });
     }
